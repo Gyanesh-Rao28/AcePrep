@@ -5,22 +5,26 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-success-100: #49de50;
-  --color-success-200: #42c748;
-  --color-destructive-100: #f75353;
-  --color-destructive-200: #c44141;
+  /* Success and destructive colors */
+  --color-success-100: #7579E7; /* Updated with neon purple */
+  --color-success-200: #6064C8; /* Darker variant for hover */
+  --color-destructive-100: #FF0000; /* Bright red from scheme 1 */
+  --color-destructive-200: #950101; /* Darker red from scheme 1 */
 
-  --color-primary-100: #dddfff;
-  --color-primary-200: #cac5fe;
+  /* Primary colors - using neon purple/blue from scheme 3 */
+  --color-primary-100: #B9FFFC; /* Neon cyan */
+  --color-primary-200: #A3D8F4; /* Lighter blue */
 
-  --color-light-100: #d6e0ff;
-  --color-light-400: #6870a6;
-  --color-light-600: #4f557d;
-  --color-light-800: #24273a;
+  /* Light accent colors */
+  --color-light-100: #BBE1FA; /* Light blue from scheme 2 */
+  --color-light-400: #3282B8; /* Medium blue from scheme 2 */
+  --color-light-600: #0F4C75; /* Dark blue from scheme 2 */
+  --color-light-800: #1B262C; /* Darkest blue from scheme 2 */
 
-  --color-dark-100: #020408;
-  --color-dark-200: #27282f;
-  --color-dark-300: #242633;
+  /* Dark base colors - keeping dark but adjusting slightly */
+  --color-dark-100: #000000; /* Pure black from scheme 1 */
+  --color-dark-200: #1B262C; /* Dark blue-gray from scheme 2 */
+  --color-dark-300: #0F1620; /* Even darker blue-black */
 
   --font-mona-sans: "Mona Sans", sans-serif;
 
@@ -29,74 +33,75 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(0.1 0 0); /* Darker background */
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.15 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.15 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.8 0.2 260); /* Purple-blue neon */
+  --primary-foreground: oklch(0.1 0 0);
+  --secondary: oklch(0.2 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.2 0 0);
+  --muted-foreground: oklch(0.75 0 0);
+  --accent: oklch(0.8 0.2 200); /* Cyan-blue neon accent */
+  --accent-foreground: oklch(0.1 0 0);
+  --destructive: oklch(0.65 0.3 20); /* Red */
+  --border: oklch(0.3 0 0);
+  --input: oklch(0.25 0 0);
+  --ring: oklch(0.7 0.2 260); /* Purple highlight */
+  --chart-1: oklch(0.75 0.2 260); /* Purple */
+  --chart-2: oklch(0.7 0.15 220); /* Blue */
+  --chart-3: oklch(0.65 0.1 180); /* Cyan */
+  --chart-4: oklch(0.8 0.2 280); /* Violet */
+  --chart-5: oklch(0.75 0.25 240); /* Blue-purple */
+  --sidebar: oklch(0.15 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.75 0.2 260); /* Purple-blue neon */
+  --sidebar-primary-foreground: oklch(0.1 0 0);
+  --sidebar-accent: oklch(0.2 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.3 0 0);
+  --sidebar-ring: oklch(0.7 0.2 260);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0.08 0 0); /* Nearly black background */
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
+  --card: oklch(0.12 0 0);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
+  --popover: oklch(0.12 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
+  --primary: oklch(0.8 0.2 260); /* Purple-blue neon */
+  --primary-foreground: oklch(0.08 0 0);
+  --secondary: oklch(0.17 0 0);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
+  --muted: oklch(0.17 0 0);
   --muted-foreground: var(--light-100);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
+  --accent: oklch(0.8 0.2 200); /* Cyan-blue neon accent */
+  --accent-foreground: oklch(0.08 0 0);
+  --destructive: oklch(0.7 0.3 20); /* Red */
+  --border: oklch(1 0 0 / 15%);
+  --input: oklch(1 0 0 / 20%);
+  --ring: oklch(0.75 0.2 260); /* Purple highlight */
+  --chart-1: oklch(0.75 0.2 260); /* Purple */
+  --chart-2: oklch(0.7 0.15 220); /* Blue */
+  --chart-3: oklch(0.8 0.2 200); /* Cyan */
+  --chart-4: oklch(0.8 0.2 280); /* Violet */
+  --chart-5: oklch(0.75 0.25 240); /* Blue-purple */
+  --sidebar: oklch(0.12 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-primary: oklch(0.75 0.2 260); /* Purple-blue neon */
+  --sidebar-primary-foreground: oklch(0.08 0 0);
+  --sidebar-accent: oklch(0.17 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --sidebar-border: oklch(1 0 0 / 15%);
+  --sidebar-ring: oklch(0.75 0.2 260);
 }
 
 @theme inline {
+  /* Keeping this section unchanged as it maps variables */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -182,7 +187,7 @@
   }
 
   .btn-upload {
-    @apply bg-dark-200 rounded-full min-h-12 px-5 cursor-pointer border border-input  overflow-hidden;
+    @apply bg-dark-200 rounded-full min-h-12 px-5 cursor-pointer border border-input overflow-hidden;
   }
 
   .card-border {
@@ -241,7 +246,7 @@
     @apply border-gradient p-0.5 rounded-2xl w-full;
 
     .transcript {
-      @apply dark-gradient rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center;
+      @apply dark-gradient rounded-2xl min-h-12 px-5 py-3 flex items-center justify-center;
 
       p {
         @apply text-lg text-center text-white;
@@ -294,24 +299,25 @@
   }
 }
 
+/* Updated gradients for the dark neon theme */
 @utility dark-gradient {
-  @apply bg-gradient-to-b from-[#1A1C20] to-[#08090D];
+  @apply bg-gradient-to-b from-[#1B262C] to-[#0F1620]; /* Using darker blue tones */
 }
 
 @utility border-gradient {
-  @apply bg-gradient-to-b from-[#4B4D4F] to-[#4B4D4F33];
-} 
+  @apply bg-gradient-to-b from-[#3282B8] to-[#3282B833]; /* Using blue from scheme 2 */
+}
 
 @utility pattern {
   @apply bg-[url('/pattern.png')] bg-top bg-no-repeat;
 }
 
 @utility blue-gradient-dark {
-  @apply bg-gradient-to-b from-[#171532] to-[#08090D];
+  @apply bg-gradient-to-b from-[#0F1D2A] to-[#000000]; /* Darker blue to black */
 }
 
 @utility blue-gradient {
-  @apply bg-gradient-to-l from-[#FFFFFF] to-[#CAC5FE];
+  @apply bg-gradient-to-l from-[#B9FFFC] to-[#7579E7]; /* Cyan to purple gradient */
 }
 
 @utility flex-center {
@@ -322,6 +328,17 @@
   animation: fadeIn 0.3s ease-in-out;
 }
 
+/* Adding a glow effect utility for neon elements */
+@utility neon-glow {
+  @apply shadow-[0_0_10px_#7579E7,0_0_20px_#7579E7];
+  transition: all 0.3s ease;
+}
+
+/* Adding a subtle pulse animation for interactive elements */
+@utility neon-pulse {
+  animation: neonPulse 2s infinite;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -330,5 +347,17 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes neonPulse {
+  0% {
+    box-shadow: 0 0 5px #7579E7, 0 0 10px #7579E7;
+  }
+  50% {
+    box-shadow: 0 0 15px #7579E7, 0 0 20px #7579E7;
+  }
+  100% {
+    box-shadow: 0 0 5px #7579E7, 0 0 10px #7579E7;
   }
 }
