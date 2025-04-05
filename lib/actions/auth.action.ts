@@ -104,7 +104,7 @@ export async function getCurrentUser(): Promise<User | null> {
     try {
         const decodedClaims = await auth.verifySessionCookie(sessionCookie, true);
 
-        console.log("decodedClaims {serverSide}: ", decodedClaims)
+        // console.log("decodedClaims {serverSide}: ", decodedClaims)
 
         // get user info from db
         const userRecord = await db
@@ -112,6 +112,8 @@ export async function getCurrentUser(): Promise<User | null> {
             .doc(decodedClaims.uid)
             .get();
         if (!userRecord.exists) return null;
+
+        // console.log("user record [ServerSide]",userRecord.data())
 
         return {
             ...userRecord.data(),
