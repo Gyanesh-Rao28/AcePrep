@@ -1,10 +1,13 @@
-"use client"
+"use client";
+
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
-import Image from "next/image"
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { interviewer } from "@/constants";
+import { createFeedback } from "@/lib/actions/general.action";
 
 enum CallStatus {
     INACTIVE = "INACTIVE",
@@ -18,21 +21,19 @@ interface SavedMessage {
     content: string;
 }
 
-
-const Agent = ({ userName,
+const Agent = ({
+    userName,
     userId,
     interviewId,
     feedbackId,
     type,
-    questions 
-    }: AgentProps) => {
-
+    questions,
+}: AgentProps) => {
     const router = useRouter();
     const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
-    const [isSpeaking, setIsSpeaking] = useState(false);
     const [messages, setMessages] = useState<SavedMessage[]>([]);
+    const [isSpeaking, setIsSpeaking] = useState(false);
     const [lastMessage, setLastMessage] = useState<string>("");
-
 
     useEffect(() => {
         const onCallStart = () => {
@@ -80,38 +81,74 @@ const Agent = ({ userName,
             vapi.off("error", onError);
         };
     }, []);
-    
 
     useEffect(() => {
-        
-        if(callStatus === CallStatus.FINISHED)router.push('/')
+        if (messages.length > 0) {
+            setLastMessage(messages[messages.length - 1].content);
+        }
 
-    }, [callStatus, messages, type, userId])
-    
+        const handleGenerateFeedback = async (messages: SavedMessage[]) => {
+            console.log("handleGenerateFeedback");
 
+            const { success, feedbackId: id } = await createFeedback({
+                interviewId: interviewId!,
+                userId: userId!,
+                transcript: messages,
+                feedbackId,
+            });
 
-
-    const handleCall = async()=>{
-        setCallStatus(CallStatus.CONNECTING);
-        await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!,{
-            variableValues:{
-                username: userName,
-                userid: userId
+            if (success && id) {
+                router.push(`/interview/${interviewId}/feedback`);
+            } else {
+                console.log("Error saving feedback");
+                router.push("/");
             }
-        })
-    }
+        };
 
-    const handleDisconnect = async() => {
+        if (callStatus === CallStatus.FINISHED) {
+            if (type === "generate") {
+                router.push("/");
+            } else {
+                handleGenerateFeedback(messages);
+            }
+        }
+    }, [messages, callStatus, feedbackId, interviewId, router, type, userId]);
+
+    const handleCall = async () => {
+        setCallStatus(CallStatus.CONNECTING);
+
+        if (type === "generate") {
+            await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
+                variableValues: {
+                    username: userName,
+                    userid: userId,
+                },
+            });
+        } else {
+            let formattedQuestions = "";
+            if (questions) {
+                formattedQuestions = questions
+                    .map((question) => `- ${question}`)
+                    .join("\n");
+            }
+
+            await vapi.start(interviewer, {
+                variableValues: {
+                    questions: formattedQuestions,
+                },
+            });
+        }
+    };
+
+    const handleDisconnect = () => {
         setCallStatus(CallStatus.FINISHED);
         vapi.stop();
-    }
-
-    const latestMessage = messages[messages.length-1]?.content
-    const isCallInactiveorFinished = callStatus === CallStatus.INACTIVE || callStatus=== CallStatus.FINISHED
+    };
 
     return (
         <>
             <div className="call-view">
+                {/* AI Interviewer Card */}
                 <div className="card-interviewer">
                     <div className="avatar">
                         <Image
@@ -123,8 +160,10 @@ const Agent = ({ userName,
                         />
                         {isSpeaking && <span className="animate-speak" />}
                     </div>
-                    <h3>AI Interviewer</h3> 
+                    <h3>AI Interviewer</h3>
                 </div>
+
+                {/* User Profile Card */}
                 <div className="card-border">
                     <div className="card-content">
                         <Image
@@ -139,24 +178,21 @@ const Agent = ({ userName,
                 </div>
             </div>
 
-
             {messages.length > 0 && (
                 <div className="transcript-border">
                     <div className="transcript">
                         <p
-                            key={latestMessage}
+                            key={lastMessage}
                             className={cn(
                                 "transition-opacity duration-500 opacity-0",
                                 "animate-fadeIn opacity-100"
                             )}
                         >
-                            {latestMessage}
+                            {lastMessage}
                         </p>
                     </div>
                 </div>
             )}
-
-
 
             <div className="w-full flex justify-center">
                 {callStatus !== "ACTIVE" ? (
@@ -169,7 +205,9 @@ const Agent = ({ userName,
                         />
 
                         <span className="relative">
-                            {isCallInactiveorFinished ? "Call" : ". . ."}
+                            {callStatus === "INACTIVE" || callStatus === "FINISHED"
+                                ? "Call"
+                                : ". . ."}
                         </span>
                     </button>
                 ) : (
@@ -179,7 +217,7 @@ const Agent = ({ userName,
                 )}
             </div>
         </>
-    )
-}
+    );
+};
 
-export default Agent
+export default Agent;
