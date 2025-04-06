@@ -10,12 +10,14 @@ export async function createFeedback(params: CreateFeedbackParams) {
     const { interviewId, userId, transcript, feedbackId } = params;
 
     try {
+        console.log("feedback transcript:", transcript)
         const formattedTranscript = transcript
-            .map(
-                (sentence: { role: string; content: string }) =>
+            .map((sentence: { role: string; content: string }) =>
                     `- ${sentence.role}: ${sentence.content}\n`
             )
             .join("");
+
+        console.log("formatted feedback transcript:", formattedTranscript)
 
         const { object } = await generateObject({
             model: google("gemini-2.0-flash-001", {
@@ -37,6 +39,8 @@ export async function createFeedback(params: CreateFeedbackParams) {
             system:
                 "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories",
         });
+
+        console.log("Feedback report: ", object)
 
         const feedback = {
             interviewId: interviewId,
@@ -66,28 +70,29 @@ export async function createFeedback(params: CreateFeedbackParams) {
     }
 }
 
-export async function getInterviewById(id: string): Promise<Interview | null> {
-    const interview = await db.collection("interviews").doc(id).get();
-
-    return interview.data() as Interview | null;
-}
 
 export async function getFeedbackByInterviewId(
     params: GetFeedbackByInterviewIdParams
 ): Promise<Feedback | null> {
     const { interviewId, userId } = params;
-
+    
     const querySnapshot = await db
-        .collection("feedback")
-        .where("interviewId", "==", interviewId)
-        .where("userId", "==", userId)
-        .limit(1)
-        .get();
+    .collection("feedback")
+    .where("interviewId", "==", interviewId)
+    .where("userId", "==", userId)
+    .limit(1)
+    .get();
 
     if (querySnapshot.empty) return null;
-
+    
     const feedbackDoc = querySnapshot.docs[0];
     return { id: feedbackDoc.id, ...feedbackDoc.data() } as Feedback;
+}
+
+export async function getInterviewById(id: string): Promise<Interview | null> {
+    const interview = await db.collection("interviews").doc(id).get();
+
+    return interview.data() as Interview | null;
 }
 
 export async function getLatestInterviews(
